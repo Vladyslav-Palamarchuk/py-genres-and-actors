@@ -4,6 +4,11 @@ from django.db.models import QuerySet
 
 from db.models import Genre, Actor
 
+import init_django_orm  # noqa: F401
+from django.db.models import QuerySet
+
+from db.models import Genre, Actor
+
 
 def main() -> QuerySet[Actor]:
     # 1. Створення жанрів через список і цикл
@@ -11,10 +16,10 @@ def main() -> QuerySet[Actor]:
     for genre_name in genres_to_create:
         Genre.objects.create(name=genre_name)
 
-    # 2. Створення акторів через список кортежів та цикл
+    # 2. Створення акторів через список кортежів та цикл (з точним дотриманням початкових назв)
     actors_to_create = [
-        ("George", "Klooni"),
-        ("Keanu", "Reves"),
+        ("George", "Klooney"),
+        ("Kianu", "Reaves"),
         ("Scarlett", "Keegan"),
         ("Will", "Smith"),
         ("Jaden", "Smith"),
@@ -30,12 +35,13 @@ def main() -> QuerySet[Actor]:
     drama_genre.save()
 
     # Оновлюємо прізвище Джорджа Клуні
-    george = Actor.objects.get(first_name="George", last_name="Klooni")
+    george = Actor.objects.get(first_name="George", last_name="Klooney")
     george.last_name = "Clooney"
     george.save()
 
-    # Оновлюємо прізвище Кіану Рівза
-    keanu = Actor.objects.get(first_name="Keanu", last_name="Reves")
+    # Оновлюємо ім'я та прізвище Кіану Рівза
+    keanu = Actor.objects.get(first_name="Kianu", last_name="Reaves")
+    keanu.first_name = "Keanu"
     keanu.last_name = "Reeves"
     keanu.save()
 
@@ -48,7 +54,3 @@ def main() -> QuerySet[Actor]:
 
     # 5. Повернення результату
     return Actor.objects.filter(last_name="Smith").order_by("first_name")
-
-
-if __name__ == "__main__":
-    main()
