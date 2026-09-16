@@ -10,7 +10,7 @@ def main() -> QuerySet[Actor]:
     for genre_name in genres_to_create:
         Genre.objects.create(name=genre_name)
 
-    # 2. Створення акторів через список кортежів та цикл (з точним дотриманням початкових назв)
+    # 2. Створення акторів через список кортежів та цикл
     actors_to_create = [
         ("George", "Klooney"),
         ("Kianu", "Reaves"),
@@ -22,29 +22,25 @@ def main() -> QuerySet[Actor]:
     for first_name, last_name in actors_to_create:
         Actor.objects.create(first_name=first_name, last_name=last_name)
 
-    # 3. Оновлення
-    # Оновлюємо жанр "Dramma" до "Drama"
+    # 3. Оновлення жанру "Dramma" до "Drama"
     drama_genre = Genre.objects.get(name="Dramma")
     drama_genre.name = "Drama"
     drama_genre.save()
 
-    # Оновлюємо прізвище Джорджа Клуні
+    # 4. Оновлення прізвища Джорджа Клуні ("Klooney" -> "Clooney")
     george = Actor.objects.get(first_name="George", last_name="Klooney")
     george.last_name = "Clooney"
     george.save()
 
-    # Оновлюємо ім'я та прізвище Кіану Рівза
+    # 5. Оновлення Кіану Рівза ("Kianu Reaves" -> "Keanu Reeves")
     keanu = Actor.objects.get(first_name="Kianu", last_name="Reaves")
     keanu.first_name = "Keanu"
     keanu.last_name = "Reeves"
     keanu.save()
 
-    # 4. Видалення
-    # Видаляємо жанр Action
+    # 6. Видалення жанру "Action" та акторок "Scarlett"
     Genre.objects.get(name="Action").delete()
-
-    # Видаляємо всіх акторок з ім'ям "Scarlett"
     Actor.objects.filter(first_name="Scarlett").delete()
 
-    # 5. Повернення результату
+    # 7. Повернення відфільтрованого та відсортованого набору запитів
     return Actor.objects.filter(last_name="Smith").order_by("first_name")
